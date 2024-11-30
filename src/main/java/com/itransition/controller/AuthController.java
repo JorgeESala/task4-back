@@ -38,7 +38,7 @@ public class AuthController {
 		if(user.isPresent() && passwordEncoder.matches(loginRequest.getPassword(), user.get().getPassword()) ) {
 			userService.updateLogin(user.get());
 			session.setAttribute("user", user);
-			return ResponseEntity.ok("Logged in");
+			return ResponseEntity.status(HttpStatus.OK).body("Logged in");
 		}
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Bad credentials");
 	}
@@ -48,7 +48,7 @@ public class AuthController {
 		try {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user);
-        return ResponseEntity.ok("User registered");
+        return ResponseEntity.status(HttpStatus.OK).body("User registered");
 		}catch (RuntimeException e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 		}

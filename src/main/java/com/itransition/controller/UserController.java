@@ -35,41 +35,6 @@ public class UserController {
 		return new ResponseEntity<List<User>>(userService.getUsers(), HttpStatus.OK);
 	}
 	
-//	@PostMapping
-//	public ResponseEntity<User> createUser(User user){
-//		try {
-//			User createdUser = userService.save(user);
-//			return new ResponseEntity<User> (createdUser, HttpStatus.CREATED);
-//			
-//		}catch (Exception e) {
-//			return new ResponseEntity<User>(HttpStatus.CONFLICT);
-//		}
-//	}
-	
-//	@PostMapping("/block")
-//	public ResponseEntity<String> blockUser(@RequestBody EmailDTO email, HttpSession session){
-//		if(!isUserLogged(session))
-//			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-//		try {
-//			userService.changeBlockedStatus(email.getEmail(), true);
-//			return ResponseEntity.ok("User blocked");
-//		}catch (Exception e) {
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//		}
-//	}
-	
-//	@PostMapping("/unblock")
-//	public ResponseEntity<String> unblockUser(@RequestBody EmailDTO email, HttpSession session){
-//		if(!isUserLogged(session))
-//			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-//		try {
-//			userService.changeBlockedStatus(email.getEmail(), false);
-//			return ResponseEntity.ok("User unblocked");
-//		}catch (Exception e) {
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//		}
-//	}
-	
 	@PostMapping("/unblock")
 	public ResponseEntity<String> unblockUsers(@RequestBody List<EmailDTO> usersEmail, HttpSession session){
 		
@@ -88,18 +53,6 @@ public class UserController {
 		return changeUsersStatus(usersEmail, true);
 	}
 	
-//	@PostMapping("/delete")
-//	public ResponseEntity<String> deleteUser(@RequestBody EmailDTO email, HttpSession session){
-//		if(!isUserLogged(session))
-//			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-//		try {
-//			userService.deleteByEmail(email.getEmail());
-//			return ResponseEntity.ok("User deleted");
-//		}catch (Exception e) {
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//		}
-//	}
-	
 	@DeleteMapping
 	public ResponseEntity<String> deleteUsers(@RequestBody List<EmailDTO> usersEmail, HttpSession session){
 		if(!isUserLogged(session))
@@ -111,7 +64,7 @@ public class UserController {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 			}
 		}
-		return ResponseEntity.ok("Users deleted");
+		return ResponseEntity.status(HttpStatus.OK).body("Users deleted");
 	}
 	
 	
@@ -120,7 +73,7 @@ public class UserController {
 			for(EmailDTO email :usersEmail ) {
 				userService.changeBlockedStatus(email.getEmail(), status);
 			}
-			return ResponseEntity.ok(status? "users blocked" :"users unblocked");
+			return ResponseEntity.status(HttpStatus.OK).body(status? "users blocked" :"users unblocked");
 		}catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
