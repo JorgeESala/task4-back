@@ -81,9 +81,8 @@ public class UserController {
 	}
 	
 	public Boolean isUserLogged(HttpSession session) {
-		Optional<User>user = (Optional<User>) session.getAttribute("user");
 
-        if (user == null) {
+        if (session == null || session.getAttribute("user") == null) {
             return false;
         }
         return true;
