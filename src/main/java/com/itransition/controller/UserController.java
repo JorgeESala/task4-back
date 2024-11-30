@@ -30,6 +30,7 @@ public class UserController {
 	
 	@GetMapping
 	public ResponseEntity<List<User>> getUsers(HttpSession session){
+		System.out.println("Entered get " + session.getId());
 		if(!isUserLogged(session))
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		return new ResponseEntity<List<User>>(userService.getUsers(), HttpStatus.OK);
