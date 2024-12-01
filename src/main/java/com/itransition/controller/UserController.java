@@ -19,8 +19,8 @@ import com.itransition.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 
-//@CrossOrigin(origins = "https://task4-jorge.netlify.app", allowCredentials = "true")
-@CrossOrigin
+@CrossOrigin(origins = "https://task4-jorge.netlify.app", allowCredentials = "true")
+//@CrossOrigin
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
