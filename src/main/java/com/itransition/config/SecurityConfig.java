@@ -1,6 +1,7 @@
 package com.itransition.config;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,15 +27,22 @@ public class SecurityConfig {
 	}
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-            http.authorizeHttpRequests(request -> request
-            .anyRequest()
-            .permitAll()
-            )
-            .sessionManagement(session -> session
-            		.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-            		.maximumSessions(1))
-            .csrf(csrf -> csrf.disable());
-        return http.build();
+		http.cors(cors -> cors
+		        .configurationSource(request -> {
+		            CorsConfiguration config = new CorsConfiguration();
+		            config.setAllowedOrigins(List.of("https://task4-jorge.netlify.app"));
+		            config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+		            config.setAllowCredentials(true);
+		            config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+		            return config;
+		        }))
+		        .authorizeHttpRequests(request -> request
+		            .anyRequest()
+		            .permitAll())
+		        .sessionManagement(session -> session
+		            .sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+		        .csrf(csrf -> csrf.disable());
+		    return http.build();
     }
 	@Bean
 	UrlBasedCorsConfigurationSource corsConfigurationSource() {
