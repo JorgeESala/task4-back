@@ -17,7 +17,8 @@ import com.itransition.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 
-@CrossOrigin(origins = "https://task4-jorge.netlify.app", allowCredentials = "true")
+//@CrossOrigin(origins = "https://task4-jorge.netlify.app", allowCredentials = "true")
+@CrossOrigin
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -37,7 +38,8 @@ public class AuthController {
 		}
 		if(user.isPresent() && passwordEncoder.matches(loginRequest.getPassword(), user.get().getPassword()) ) {
 			userService.updateLogin(user.get());
-			session.setAttribute("user", user);
+			session.setAttribute("user", user.get());
+			System.out.println(((User)session.getAttribute("user")).getEmail());
 			return ResponseEntity.status(HttpStatus.OK).body("Logged in");
 		}
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Bad credentials");
